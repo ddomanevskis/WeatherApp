@@ -26,6 +26,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Function overrides
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Registering the cell
+        weatherTable.register(WeatherTableViewCell.nib(), forCellReuseIdentifier: WeatherTableViewCell.identifier)
+        
         weatherTable.delegate = self
         weatherTable.dataSource = self
     }

@@ -15,8 +15,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var model = [Weather]()
     
-    var locationRequest = [Location]()
-    
     let manageLocation = CLLocationManager()
     
     var userCoordinates: CLLocation?
@@ -32,8 +30,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if !locations.isEmpty, userCoordinates == nil {
             userCoordinates = locations.first
             manageLocation.stopUpdatingLocation()
-            locationRequest.requestWeatherAtLoc()
-            
+            requestWeatherAtLoc()
         }
     }
     
@@ -61,6 +58,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidAppear(animated)
         locationInit()
     }
-
-
+    
+    // MARK: - Get weather for user location
+    private func requestWeatherAtLoc() {
+        guard let testCoordinates = userCoordinates else {
+            return
+        }
+        let longitude = testCoordinates.coordinate.longitude
+        let latitude = testCoordinates.coordinate.latitude
+        
+        let apiKey = "e65c6d06ba5ce7b6c633678b56db8548"
+        
+        let url = "api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)"
+        
+        URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: {data, response, error in
+            
+            guard let data = data, error == nil else {
+                print("Sorry, something went wrong. Please try again later..")
+                return
+            }
+        })
+    }
 }

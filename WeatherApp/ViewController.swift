@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Connectors, properties and variables
     @IBOutlet var weatherTable: UITableView!
     
-    var model = [Weather]()
+    var model = [CurrentWeatherMain]()
     
     let manageLocation = CLLocationManager()
     
@@ -40,7 +40,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: WeatherTableViewCell.identifier, for: indexPath) as! WeatherTableViewCell
+        cell.configure(with: model[indexPath.row])
+        return cell
     }
     
     //MARK: Function overrides
@@ -77,6 +79,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Sorry, something went wrong. Please try again later..")
                 return
             }
-        })
+            
+            var json: Weather?
+            do {
+                json = try JSONDecoder().decode(Weather.self, from: data)
+            }
+            catch {
+                print("Error: \(error)")
+            }
+            
+            guard let result = json else {
+                return
+            }
+            
+            let entry = result.list.main
+            
+            self.model.append(contentsOf: entry)
+            
+            DispatchQueue.main.async {
+                self.weatherTable.reloadData()
+            }
+            
+        }).resume()
     }
 }

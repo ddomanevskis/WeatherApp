@@ -17,7 +17,7 @@ struct Weather: Codable {
 
 struct CurrentWeather: Codable {
     let dt: Float
-    let main: CurrentWeatherMain
+    let main: [CurrentWeatherMain]
     let weather: WeatherWeather
     let clouds: CurrentClouds
     let wind: CurrentWind

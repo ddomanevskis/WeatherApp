@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Connectors, properties and variables
     @IBOutlet var weatherTable: UITableView!
     
-    var model = [CurrentWeatherMain]()
+    var model = [CurrentWeather]()
     
     let manageLocation = CLLocationManager()
     
@@ -45,6 +45,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
     //MARK: Function overrides
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +75,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let apiKey = "e65c6d06ba5ce7b6c633678b56db8548"
         
-        let url = "api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)"
+        let url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)"
         
         URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: {data, response, error in
             
@@ -92,14 +96,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 return
             }
             
-            let entry = result.list.main
+            let entry = result.list
             
             self.model.append(contentsOf: entry)
             
             DispatchQueue.main.async {
                 self.weatherTable.reloadData()
+                
+                self.weatherTable.tableHeaderView = self.createTableHeader()
             }
             
         }).resume()
+    }
+    
+    func createTableHeader() -> UIView {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width))
+        
+        let locationLabel = UILabel(frame: CGRect(x: 10, y: 10, width: view.frame.size.width-20, height: headerView.frame.size.height/5))
+        let requestTimeLabel = UILabel(frame: CGRect(x: 10, y: 20 + locationLabel.frame.size.height, width: view.frame.size.width-20, height: headerView.frame.size.height/5))
+        
+        headerView.addSubview(locationLabel)
+        headerView.addSubview(requestTimeLabel)
+        
+        locationLabel.textAlignment = .center
+        requestTimeLabel.textAlignment = .center
+        
+        locationLabel.text = "Riga"
+        requestTimeLabel.text = "17 January"
+        
+        return headerView
     }
 }

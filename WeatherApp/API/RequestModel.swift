@@ -9,16 +9,16 @@ import Foundation
 
 struct Weather: Codable {
     let cod: String
-    let message: String
+    let message: Float
     let cnt: Float
-    let list: CurrentWeather
+    let list: [CurrentWeather]
     let city: CityWeather
 }
 
 struct CurrentWeather: Codable {
     let dt: Float
-    let main: [CurrentWeatherMain]
-    let weather: WeatherWeather
+    let main: CurrentWeatherMain
+    let weather: [WeatherWeather]
     let clouds: CurrentClouds
     let wind: CurrentWind
     let visibility: Float

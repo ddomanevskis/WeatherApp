@@ -18,6 +18,7 @@ class WeatherTableViewCell: UITableViewCell {
     
     //MARK: Variables
     static let identifier = "WeatherTableViewCell"
+    let requestDate = Date()
     
     static func nib() -> UINib {
         return UINib(nibName: "WeatherTableViewCell", bundle: nil)
@@ -26,7 +27,6 @@ class WeatherTableViewCell: UITableViewCell {
     // MARK: Function overrides
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .gray
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,10 +35,24 @@ class WeatherTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(with model: CurrentWeatherMain) {
-        self.minTempLabel.text = "\(model.temp_min)"
-        self.maxTempLabel.text = "\(model.temp_max)"
-        self.currentTempLabel.text = "\(model.temp)"
+    func configure(with model: CurrentWeather) {
+        self.minTempLabel.text = "\(model.main.temp_min)°C"
+        self.minTempLabel.textAlignment = .center
+        self.maxTempLabel.text = "\(model.main.temp_max)°C"
+        self.maxTempLabel.textAlignment = .center
+        self.currentTempLabel.text = "\(model.main.temp)°C"
+        self.currentTempLabel.textAlignment = .center
+        
+        self.displayDayLabel.text = dateFormat()
+        
+        self.weatherIcon.image = UIImage(systemName: "sun.min.full")
+        self.weatherIcon.contentMode = .scaleAspectFit
+    }
+    
+    func dateFormat() -> String {
+        let format = DateFormatter()
+        format.dateFormat = "EEEE"
+        return format.string(from: requestDate)
     }
     
 }

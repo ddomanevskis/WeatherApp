@@ -10,8 +10,16 @@ import CoreLocation
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
+    // UserDefaults for Timestamp
+    let timeStamp = UserDefaults.standard
+    
     //MARK: Connectors, properties and variables
     @IBOutlet var weatherTable: UITableView!
+    
+    @IBAction func getWeatherRequest(_ sender: Any) {
+        getTimestamp()
+        locationInit()
+    }
     
     var model = [CurrentWeather]()
     
@@ -32,6 +40,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             manageLocation.stopUpdatingLocation()
             requestWeatherAtLoc()
         }
+    }
+    //MARK: Get timestamp
+    func getTimestamp() {
+        let time = NSDate.now
+        let format = DateFormatter()
+        format.dateFormat = "MM-dd-yyyy HH:mm"
+        
+        let formatString = format.string(from: time)
+        timeStamp.set(formatString, forKey: "request")
     }
     
     //MARK: TableView Controllers
@@ -58,11 +75,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         weatherTable.delegate = self
         weatherTable.dataSource = self
+        
+        // draw previous time data
+        loadSavedData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationInit()
     }
     
     // MARK: - Get weather for user location
@@ -99,10 +118,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let entry = result.list
             
             self.model.append(contentsOf: entry)
+            UserDefaults.standard.set(try? PropertyListEncoder().encode(self.model), forKey: "weather")
             
             DispatchQueue.main.async {
                 self.weatherTable.reloadData()
-                
                 self.weatherTable.tableHeaderView = self.createTableHeader()
             }
             
@@ -110,20 +129,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func createTableHeader() -> UIView {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.width/5))
         
-        let locationLabel = UILabel(frame: CGRect(x: 10, y: 10, width: view.frame.size.width-20, height: headerView.frame.size.height/5))
-        let requestTimeLabel = UILabel(frame: CGRect(x: 10, y: 20 + locationLabel.frame.size.height, width: view.frame.size.width-20, height: headerView.frame.size.height/5))
+        let requestTimeLabel = UILabel(frame: CGRect(x: 10, y: 10, width: view.frame.size.width-20, height: headerView.frame.size.height/5))
         
-        headerView.addSubview(locationLabel)
         headerView.addSubview(requestTimeLabel)
         
-        locationLabel.textAlignment = .center
         requestTimeLabel.textAlignment = .center
         
-        locationLabel.text = "Riga"
-        requestTimeLabel.text = "17 January"
+        requestTimeLabel.text = timeStamp.string(forKey: "request")
         
         return headerView
     }
+    
+    func loadSavedData() {
+        
+        self.weatherTable.tableHeaderView = createTableHeader()
+        
+        guard let weatherData = UserDefaults.standard.value(forKey: "weather") else {
+            return
+        }
+        guard let savedModel = try? PropertyListDecoder().decode(Array<CurrentWeather>.self, from: weatherData as! Data) else {
+            return
+        }
+        self.model.append(contentsOf: savedModel)
+    }
+
 }

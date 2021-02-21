@@ -17,15 +17,43 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0fG-Jd-jzc">
-                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <rect key="frame" x="0.0" y="93" width="414" height="803"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bc9-ag-02Y" userLabel="ControlsView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="39"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleAspectFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dNO-r7-aJQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kDA-DG-M8j">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <state key="normal" title="Request Weather"/>
+                                                <connections>
+                                                    <action selector="getWeatherRequest:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cgU-cL-on9"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="dNO-r7-aJQ" secondAttribute="trailing" id="Thh-N4-7D4"/>
+                                    <constraint firstItem="dNO-r7-aJQ" firstAttribute="top" secondItem="Bc9-ag-02Y" secondAttribute="top" id="Zdz-Ws-md9"/>
+                                    <constraint firstAttribute="bottom" secondItem="dNO-r7-aJQ" secondAttribute="bottom" id="e6w-HI-ukU"/>
+                                    <constraint firstItem="dNO-r7-aJQ" firstAttribute="leading" secondItem="Bc9-ag-02Y" secondAttribute="leading" id="qB6-3g-6cr"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Bc9-ag-02Y" secondAttribute="trailing" id="CWI-Qi-f02"/>
+                            <constraint firstItem="Bc9-ag-02Y" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WAg-Mr-ziI"/>
                             <constraint firstItem="0fG-Jd-jzc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="WpH-qM-sZY"/>
-                            <constraint firstItem="0fG-Jd-jzc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="ioN-Um-opL"/>
+                            <constraint firstItem="Bc9-ag-02Y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Yhg-94-Bzv"/>
+                            <constraint firstItem="0fG-Jd-jzc" firstAttribute="top" secondItem="Bc9-ag-02Y" secondAttribute="bottom" constant="10" id="izB-P8-JPj"/>
                             <constraint firstAttribute="bottom" secondItem="0fG-Jd-jzc" secondAttribute="bottom" id="jMU-qS-CMJ"/>
                             <constraint firstItem="0fG-Jd-jzc" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="oaB-ra-h6q"/>
                         </constraints>

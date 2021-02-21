@@ -54,5 +54,4 @@ class WeatherTableViewCell: UITableViewCell {
         format.dateFormat = "EEEE"
         return format.string(from: requestDate)
     }
-    
 }

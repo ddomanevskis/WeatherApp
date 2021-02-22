@@ -94,7 +94,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let apiKey = "e65c6d06ba5ce7b6c633678b56db8548"
         
-        let url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)"
+        let url = "https://api.openweathermap.org/data/2.5/forecast?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=metric"
         
         URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: {data, response, error in
             
